@@ -1,4 +1,17 @@
+import java.util.ResourceBundle;
+
 public class RandomView {
+
+    private ResourceBundle bundle;
+
+    public static final String LANGUAGE_CHOICE = "Please,choose a language. Press 1 for English, 2 - Ukrainian. ";
+
+
+    public void printMessage(String message) {
+        System.out.println(message);
+    }
+
+      /*
     void inputNumber(int left, int right) {
         System.out.println("Enter a number from " + left + " to " + right);
     }
@@ -20,4 +33,5 @@ public class RandomView {
     public void mistake() {
         System.out.println("error: not the correct number");
     }
+ */
 }

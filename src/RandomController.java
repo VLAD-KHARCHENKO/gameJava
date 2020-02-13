@@ -1,14 +1,19 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class RandomController {
     private RandomModel randomModel;
     private RandomView randomview;
+    private ResourceBundle bundle;
 
-    public RandomController(RandomModel randomModel, RandomView randomview) {
+
+    public RandomController(RandomModel randomModel, RandomView randomview, String locale) {
         this.randomModel = randomModel;
         this.randomview = randomview;
+        this.bundle = ResourceBundle.getBundle("resources", new Locale(locale));
     }
 
 
@@ -21,11 +26,14 @@ public class RandomController {
     boolean getUserNumber(int count) throws IOException {
         int yourNumber = getNumber();
         if (yourNumber == randomModel.randomNumber) {
-            randomview.win(count);
+            randomview.printMessage(bundle.getString("win") + " " + count + " " + bundle.getString("attempts"));
             return false;
         } else {
             boolean result = compare(yourNumber);
-            randomview.moreLess(result);
+            if (result == true)
+                randomview.printMessage(bundle.getString("bigger"));
+            if (result == false)
+                randomview.printMessage(bundle.getString("smaller"));
         }
         return true;
     }
@@ -34,18 +42,18 @@ public class RandomController {
         int yourNumber;
         int left = randomModel.getLeft();
         int right = randomModel.getRight();
-        randomview.inputNumber(left, right);
+        randomview.printMessage(bundle.getString("numberFrom") + " " + left + " " + bundle.getString("to")+" "+right);
         InputStreamReader inputStreamReader = new InputStreamReader(System.in);
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
         yourNumber = Integer.parseInt(bufferedReader.readLine());
-        if (yourNumber<=left||yourNumber>=right){
-            randomview.mistake();
+        if (yourNumber <= left || yourNumber >= right) {
+            randomview.printMessage(bundle.getString("error"));
         }
         return yourNumber;
     }
 
-    public void lose(){
-        randomview.lose();
+    public void lose() {
+        randomview.printMessage(bundle.getString("lose"));
     }
 
     private boolean compare(int yourNumber) {
